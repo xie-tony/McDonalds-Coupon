@@ -1,0 +1,16 @@
+{
+  "name": "mcd",
+  "version": "1.0.0",
+  "description": "McDonald's Coupon puller",
+  "main": "index.js",
+  "author": "Tony",
+  "license": "MIT",
+  "dependencies": {
+    "node-schedule": "^1.3.0",
+    "pdfjs-dist": "^2.0.489",
+    "puppeteer": "^1.4.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
