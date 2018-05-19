@@ -6,6 +6,7 @@
   "author": "Tony",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "node-schedule": "^1.3.0",
     "pdfjs-dist": "^2.0.489",
     "puppeteer": "^1.4.0"
