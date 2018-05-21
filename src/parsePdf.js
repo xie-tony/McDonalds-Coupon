@@ -1,5 +1,6 @@
 var fs = require('fs');
 var pdfjsLib = require('pdfjs-dist');
+var moment = require('moment');
 
 var pdfPath = './pdf/ON_Mailer.pdf';
 var margin = 0.74 * 72; //0.74 inch in pt, according to pdf ruler
@@ -34,10 +35,13 @@ async function parsePdf() {
     codes = [...new Set(codes)];
     var output = [];
     for (var i = 0; i < descriptions.length; i++){
+      let beginDate = moment(dates[i][0], "MMMM DD");
+      let endDate = moment(dates[i][1], "MMMM DD");
+      if (endDate.isBefore(beginDate)) endDate.add(1,"year");
       output.push({
         coupon: codes[i],
-        beignDate: dates[i][0],
-        endDate: dates[i][1],
+        beignDate: beginDate,
+        endDate: endDate,
         description: descriptions[i]
       });
     }
