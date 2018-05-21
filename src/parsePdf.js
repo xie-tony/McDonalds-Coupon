@@ -1,4 +1,3 @@
-var fs = require('fs');
 var pdfjsLib = require('pdfjs-dist');
 var moment = require('moment');
 
@@ -26,7 +25,7 @@ async function parsePdf() {
     rightside = objs.filter(item=>(item.x > viewport.width/2 && item.x < (0.75* viewport.width - 0.5 * margin) && item.y > margin && item.y < viewport.height - margin));
     //order by y first then x
     rightside.sort((a, b) => (a.y == b.y) ? a.x - b.x : a.y - b.y);
-    rightside = rightside.map(x=>x.text.replace(/®|©/g,' ')).join('').split('*').slice(1);
+    rightside = rightside.map(x=>x.text.replace(/®|©/g,' ').replace('\n', '')).join('').split('*').slice(1);
     rightside = [...new Set(rightside)];
     let descriptions = rightside.map(x=>x.substring(0,x.indexOf('!')));
     let dates = rightside.map(x => findDate(x));
@@ -40,7 +39,7 @@ async function parsePdf() {
       if (endDate.isBefore(beginDate)) endDate.add(1,"year");
       output.push({
         coupon: codes[i],
-        beignDate: beginDate,
+        beginDate: beginDate,
         endDate: endDate,
         description: descriptions[i]
       });
