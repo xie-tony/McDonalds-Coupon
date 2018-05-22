@@ -1,6 +1,4 @@
 var puppeteer = require('puppeteer');
-var axios = require('axios');
-var fs = require('fs');
 
 const McdonaldUrl = 'https://www4.mcdonalds.ca/coupons/';
 const outputFilename = './pdf/ON_Mailer.pdf';
@@ -18,10 +16,7 @@ async function fetch() {
     const pdfElement = await pdfForm.getProperty('action');
     const pdfUrl = await pdfElement.jsonValue();
     //console.log(pdfUrl);
-    await browser.close();
-    
-    var result = await axios.get(pdfUrl,{responseType: 'arraybuffer'});
-    fs.writeFileSync(outputFilename, result.data);
+    browser.close();
     return pdfUrl
 }
 

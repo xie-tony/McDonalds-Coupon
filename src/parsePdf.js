@@ -1,14 +1,13 @@
 var pdfjsLib = require('pdfjs-dist');
 var moment = require('moment');
 
-var pdfPath = './pdf/ON_Mailer.pdf';
-var margin = 0.74 * 72; //0.74 inch in pt, according to pdf ruler
+const margin = 0.74 * 72; //0.74 inch in pt, according to pdf ruler
 
 function findDate(str) {
   return str.match(/(January|Feburary|March|April|May|June|July|August|September|October|November|December) \d{1,2}/g);
 }
 
-async function parsePdf() {
+async function parsePdf(pdfPath) {
   let doc = await pdfjsLib.getDocument(pdfPath);
   var numPages = doc.numPages;
   var coupons = [];
