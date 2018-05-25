@@ -24,7 +24,7 @@ async function parsePdf(pdfPath) {
     rightside = objs.filter(item=>(item.x > viewport.width/2 && item.x < (0.75* viewport.width - 0.5 * margin) && item.y > margin && item.y < viewport.height - margin));
     //order by y first then x
     rightside.sort((a, b) => (a.y == b.y) ? a.x - b.x : a.y - b.y);
-    rightside = rightside.map(x=>x.text.replace(/®|©/g,' ').replace('\n', '')).join('').split('*').slice(1);
+    rightside = rightside.map(x=>x.text.replace(/®|©/g,' ')).join(' ').split('*').slice(1).map(x=>x.replace(/\s\s+/g, ' '));
     rightside = [...new Set(rightside)];
     let descriptions = rightside.map(x=>x.substring(0,x.indexOf('!')));
     let dates = rightside.map(x => findDate(x));

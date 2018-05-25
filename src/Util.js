@@ -14,6 +14,6 @@ async function sameFile(file1, file2) {
 
 async function downloadFile(pdfUrl, outputFilename) {
     var result = await axios.get(pdfUrl,{responseType: 'arraybuffer'});
-    await fs.writeFile(outputFilename, result.data);
+    await fs.outputFile(outputFilename, result.data);
 }
 module.exports = {fileExist, sameFile, downloadFile};

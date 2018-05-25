@@ -8,9 +8,9 @@ const pdfPath = './pdf/ON_Mailer.pdf';
 async function fetchAndParse() {
     let url = await fetch.fetch();
     let fileExist = await util.fileExist(pdfPath);
-    if (fileExist) await fs.rename(pdfPath, pdfPath+'bak');
+    if (fileExist) await fs.rename(pdfPath, pdfPath+'.bak');
     await util.downloadFile(url, pdfPath);
-    if (fileExist && util.sameFile(pdfPath, pdfPath+'bak')){
+    if (fileExist && util.sameFile(pdfPath, pdfPath+'.bak')){
         console.log('No new coupons found');
         return;
     }
