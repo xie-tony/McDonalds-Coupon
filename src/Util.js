@@ -16,4 +16,12 @@ async function downloadFile(pdfUrl, outputFilename) {
     var result = await axios.get(pdfUrl,{responseType: 'arraybuffer'});
     await fs.outputFile(outputFilename, result.data);
 }
-module.exports = {fileExist, sameFile, downloadFile};
+
+async function saveFile(fileName, text){
+    return fs.outputJson(fileName, text);
+}
+
+async function readFromFile(fileName){
+    return fs.readJson(fileName);
+}
+module.exports = {fileExist, sameFile, downloadFile, saveFile, readFromFile};

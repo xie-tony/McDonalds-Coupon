@@ -5,13 +5,18 @@ const fs = require('fs-extra');
 const md5File = require('md5-file');
 const Koa = require('koa');
 const Router = require('koa-router');
+const moment = require('moment');
 
 var app = new Koa();
 var router = new Router();
 
-var cached = [];
 
-const pdfPath = './pdf/ON_Mailer.pdf';
+const pdfPath = './cache/pdf/ON_Mailer.pdf';
+const cachePath = './cache/json/ON_Cache.json';
+
+var cached = [];
+var cachedTime = moment("1900-01-01"); //just an old date
+
 async function fetchAndParse() {
     let url = await fetch.fetch();
     let fileExist = await util.fileExist(pdfPath);
@@ -19,19 +24,42 @@ async function fetchAndParse() {
     await util.downloadFile(url, pdfPath);
     if (fileExist && util.sameFile(pdfPath, pdfPath+'.bak')){
         console.log('No new coupons found');
+        cachedTime = moment();
         return cached;
     }
     let text = await parse.parsePdf(pdfPath);
     console.log('New coupons fetched');
-    cached = text;
+    if (text != []){
+        cached = text;
+        cachedTime = moment();
+        util.saveFile(cachePath, {time: cachedTime.format(), coupons: text});
+    }
     return text;
 }
 
-router.get('/getCoupons', async ctx => {
-    let text = await fetchAndParse();
+router.get('/', async ctx => {
+    let endOfDay = moment().endOf('day');
+    let yesterday = moment().subtract(1, 'day');
+    let text = [];
+    if (yesterday.isSameOrBefore(cachedTime)){
+        cached = cached.filter(x=> moment(x.endDate).isSameOrAfter(endOfDay));
+        if (cached != []) text = cached;
+    } else {
+        text = await fetchAndParse();
+    }
     ctx.status = 200;
     ctx.body = text;
 });
+
+util.fileExist(cachePath).then(async exist => {
+    if (exist) {
+        let cacheJson = await util.readFromFile(cachePath);
+        cached = cacheJson.coupons;
+        cachedTime = moment(cacheJson.time);
+    } else {
+        fetchAndParse();
+    }
+})
 
 app.use(router.routes())
    .use(router.allowedMethods());

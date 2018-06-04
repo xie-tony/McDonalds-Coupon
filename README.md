@@ -6,10 +6,10 @@ Run `yarn install` to install dependencies, then `yarn start` to run the program
 
 ### Todo
 
-- [ ] Add an endpoint for Hyperion bot
-- [ ] Cache coupons locally, add timestamp for fetch
+- [x] Add an endpoint for Hyperion bot
+- [x] Cache coupons locally, add timestamp for fetch
 - [ ] Cron task to fetch daily
-- [ ] Read and write to file
+- [x] Read and write to file
 - [ ] Error handling
 
 ### Maybes
